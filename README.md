@@ -51,16 +51,16 @@ sudo docker-compose logs --tail=20 -f flask
 ```
 supervisorctl
 ```
-![supervisorctl](https://img.onl/4tpiiV)
+![supervisorctl](https://github.com/LinYuMingBejing/booking.com/blob/master/imgs/supervosor.png)
 
 ### Monitor uwsgi application
 ```
 uwsgitop 127.0.0.1:5002
 ```
-![uwsgitop](https://img.onl/YApRig)
+![uwsgitop](https://github.com/LinYuMingBejing/booking.com/blob/master/imgs/uwsgitop.png)
 
 ### Monitor celery worker 
 ```
 http://localhost:5001/dashboard
 ```
-![flower](https://img.onl/vJ1kp1)
+![flower](https://github.com/LinYuMingBejing/booking.com/blob/master/imgs/flower.png)
