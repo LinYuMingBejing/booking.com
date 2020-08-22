@@ -51,7 +51,7 @@ sudo docker-compose logs --tail=20 -f flask
 ```
 supervisorctl
 ```
-![supervisorctl](https://img.onl/UQlnTg)
+![supervisorctl](https://img.onl/4tpiiV)
 
 ### Monitor uwsgi application
 ```
@@ -63,4 +63,4 @@ uwsgitop 127.0.0.1:5002
 ```
 http://localhost:5001/dashboard
 ```
-![flower](https://img.onl/QiHaVX)
+![flower](https://img.onl/vJ1kp1)
