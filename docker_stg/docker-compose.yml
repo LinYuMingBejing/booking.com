@@ -1,11 +1,17 @@
 version: "2"
 services:
     redis:
-        container_name: redis
+        hostname: redis
         image: redis
         ports:
             - "6379:6379" 
         restart: always
+    
+    mongodb:
+        hostname: mongodb
+        image: mongo:4.0.8
+        ports:
+          - "27017:27017"
 
     flask:
         container_name: flask
@@ -15,11 +21,15 @@ services:
         depends_on:
           - redis
         command: supervisord -n
-        env_file: pmp.env
+        env_file: hotel.env
         expose:
             - "8700"
         ports:
             - "8700:8700"
+            # celery-flower
+            - "5001:5001"
+            # uwsgitop
+            - "5002:5002"
         logging:
             driver: "json-file"
             options:

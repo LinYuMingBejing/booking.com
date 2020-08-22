@@ -5,7 +5,11 @@ import json
 import logging
 from urllib.parse import urlparse
 from mongoengine.queryset.visitor import Q
+
 from hotel.models import Hotel
+from hotel import cache
+
+CACHE_TIMEOUT = 60 * 60 * 1
 
 
 def to_dict(data):

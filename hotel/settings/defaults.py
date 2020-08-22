@@ -6,18 +6,18 @@ from datetime import timedelta
 
 # Flask-mongoengine :
 MONGODB_SETTINGS = {
-    'host': os.environ.get('DATABASE_URL'),
+    'host': os.environ.get('DATABASE_URL','mongodb://localhost:27017/hotel'),
     'password': os.environ.get('MONGODB_PASSWORD'),
     'username': os.environ.get('MONGODB_USERNAME'),
     'tz_aware': True,
 }
 
 # Redis Cache :
-REDIS_URL = os.environ.get('REDIS_URL')
+REDIS_URL = os.environ.get('REDIS_URL','redis://localhost:6379/3')
 
 # Celery :
-CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
-CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL','redis://localhost:6379/1')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND','redis://localhost:6379/2')
 CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = os.environ.get('CELERY_TIMEZONE') or 'Asia/Taipei'
 CELERYD_LOG_FORMAT = '%(asctime)s stdout F [%(levelname)s]%(message)s}'

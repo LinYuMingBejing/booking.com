@@ -7,6 +7,7 @@ import urllib
 from logging.config import dictConfig
 
 from flask import Flask
+from flask_caching import Cache
 from flask_mongoengine import MongoEngine
 from flask_redis import FlaskRedis
 
@@ -16,6 +17,12 @@ __version__ = '1.0.0'
 
 mongo = MongoEngine()
 redis_store = FlaskRedis(decode_responses=True)
+
+caches = {
+    'default': Cache(),
+}
+
+cache = caches['default']
 
 def create_application(settings=None):
     raven_logger = logging.getLogger('raven.base.Client')

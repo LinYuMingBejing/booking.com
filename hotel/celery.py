@@ -4,6 +4,8 @@ from __future__ import absolute_import, division, unicode_literals, print_functi
 import os
 
 import raven
+import hotel
+
 from celery import Celery as BaseCelery
 from raven.contrib.celery import register_signal, register_logger_signal
 
@@ -35,9 +37,7 @@ def make_celery(app):
     return celery
 
 
-import pmp
-
-celery = make_celery(pmp.create_application())
+celery = make_celery(hotel.create_application())
 task = celery.task
 
 __all__ = ('task',)

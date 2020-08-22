@@ -4,9 +4,10 @@ from __future__ import absolute_import, division, unicode_literals, print_functi
 import jwt
 from flask import current_app, request, jsonify
 from flask_cors import cross_origin
+
 from hotel import service
-from hotel import application as app
-from hotel import util
+from hotel.api.v1 import application as app
+from hotel.api.v1.decorators import authenticated
 
 
 @app.route('/hotel/name', methods=['GET'])
@@ -45,7 +46,7 @@ def hotel_rating():
 @app.route('/hotel/stars', methods=['GET'])
 @authenticated()
 @cross_origin()
-def hotel_rating():
+def hotel_star():
     try:
         result = {"status": True}
         address = request.args.get("address")
