@@ -6,7 +6,7 @@ from datetime import timedelta
 
 # Flask-mongoengine :
 MONGODB_SETTINGS = {
-    'host': os.environ.get('DATABASE_URL','mongodb://localhost:27017/hotel'),
+    'host': os.environ.get('DATABASE_URL'),
     'password': os.environ.get('MONGODB_PASSWORD'),
     'username': os.environ.get('MONGODB_USERNAME'),
     'tz_aware': True,

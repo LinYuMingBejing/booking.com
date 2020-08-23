@@ -30,6 +30,8 @@ services:
             - "5001:5001"
             # uwsgitop
             - "5002:5002"
+            # supervisor
+            - "9001:9001"
         logging:
             driver: "json-file"
             options:

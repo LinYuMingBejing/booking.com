@@ -11,60 +11,77 @@ from hotel.api.v1.decorators import authenticated
 
 
 @app.route('/hotel/name', methods=['GET'])
-@authenticated()
 @cross_origin()
 def hotel():
+    result = {'msg': '', 'status': False}
+    data = request.args
+    if 'hotel' not in data:
+        result['msg'] = 'Lack of required parameters'
+        return jsonify(result), 401
     try:
-        result = {"status": True}
-        hotel = request.args.get("hotel")
-        result['data'] = service.find_by_hotel(hotel)
+        hotel = data.get('hotel',None)
+        result.update({
+            'msg': 'ok',
+            'status': True,
+            'data' :service.find_by_hotel(hotel)
+        })
     except Exception as e:
-        result["status"] = False
-        result['error'] = e
-    
+        result['msg'] = e
     return jsonify(result)
 
 
 @app.route('/hotel/rating', methods=['GET'])
-@authenticated()
 @cross_origin()
 def hotel_rating():
+    result = {'msg': '', 'status': False}
+    data = request.args
+    if 'city' not in data or 'high_rating' not in data or 'low_rating' not in data:
+        result['msg'] = 'Lack of required parameters'
+        return jsonify(result), 401
     try:
-        result = {"status": True}
-        address = request.args.get("address")
-        high_rating = request.args.get("high_rating")
-        low_rating = request.args.get("low_rating")
-        result['data'] = service.find_by_ratings(address, high_rating, low_rating)
+        city = data.get('city',None)
+        high_rating = data.get('high_rating',None)
+        low_rating = data.get('low_rating',None)
+        result.update({
+            'msg': 'ok',
+            'status': True,
+            'data' :service.find_by_ratings(city, high_rating, low_rating)
+        })
 
     except Exception as e:
-        result["status"] = False
-        result['error'] = e
+        result['msg'] = e
     
     return jsonify(result)
 
 
 @app.route('/hotel/stars', methods=['GET'])
-@authenticated()
 @cross_origin()
 def hotel_star():
+    result = {'msg': '', 'status': False}
+    data = request.args
+    if 'city' not in data or 'high_star' not in data or 'low_star' not in data:
+        result['msg'] = 'Lack of required parameters'
+        return jsonify(result), 401
     try:
-        result = {"status": True}
-        address = request.args.get("address")
-        high_stars = request.args.get("high_stars")
-        low_stars = request.args.get("low_stars")
-        result['data'] = service.find_by_stars(address, high_stars, low_stars)
+        city = data.get('city', None)
+        high_stars = data.get('high_star', None)
+        low_stars = data.get('low_star', None)
+        result.update({
+            'msg': 'ok',
+            'status': True,
+            'data' :service.find_by_stars(city, high_stars, low_stars)
+        })
 
     except Exception as e:
-        result["status"] = False
         result['error'] = e
-    
+
     return jsonify(result)
 
 
 @app.route('/update/url', methods=['POST'])
 @authenticated()
 def update():
-    res = {"status": True}
+    res = {'status': True}
     try:
         from hotel.tasks import update_page
         pages = request.json        

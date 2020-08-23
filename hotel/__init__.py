@@ -13,10 +13,12 @@ from flask_redis import FlaskRedis
 
 from hotel.settings.defaults import LOG_FILE_PATH, ERROR_LOG_FILE_PATH
 
-__version__ = '1.0.0'
 
 mongo = MongoEngine()
 redis_store = FlaskRedis(decode_responses=True)
+
+__version__ = '1.0.0'
+__all__ = ('cache', 'caches', 'db')
 
 caches = {
     'default': Cache(),

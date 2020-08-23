@@ -52,6 +52,11 @@ sudo docker-compose logs --tail=20 -f flask
 supervisorctl
 ```
 ![supervisorctl](https://github.com/LinYuMingBejing/booking.com/blob/master/imgs/supervosor.png)
+```
+http://localhost:9001
+```
+![supervisor_web](https://img.onl/wmlqSJ)
+
 
 ### Monitor uwsgi application
 ```

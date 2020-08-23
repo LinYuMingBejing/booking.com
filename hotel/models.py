@@ -5,8 +5,8 @@ from datetime import datetime
 from hotel import mongo as db
 
 
-class Hotel():
-    page_url = db.StringField()
+class Hotel(db.Document):
+    pageUrl = db.StringField()
     hotel = db.StringField()
     address = db.StringField()
     city = db.StringField()
@@ -32,17 +32,17 @@ class Hotel():
         if not self.creation_date:
             self.creation_date = datetime.datetime.now()
         self.modified_date = datetime.datetime.now()
-        return super(Page, self).save(*args, **kwargs)
+        return super(Hotel, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return self.url
+        return self.pageUrl
 
     def __repr__(self):
-        return '<Page {page.page_id}>'.format(page=self)
+        return '<Hotel {page.pageUrl}>'.format(page=self)
 
     def to_dict(self):
         return {
-            "page_url": self.page_url,
+            "pageUrl": self.pageUrl,
             "hotel": self.hotel,
             "address": self.address,
             "city": self.city,
@@ -54,7 +54,5 @@ class Hotel():
             'stars': self.stars,
             "comments":self.comments,
             "tourists":self.tourists,
-            "photo":self.photo,
-            "creation_date": self.creation_date,
-            "modified_date": self.modified_date
+            "photo":self.photo
         }    

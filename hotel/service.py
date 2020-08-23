@@ -10,11 +10,11 @@ from hotel.models import Hotel
 from hotel import cache
 
 CACHE_TIMEOUT = 60 * 60 * 1
-
+PULL_COUNT = 5
 
 def to_dict(data):
     page = {}
-    page['page_url'] = data['page_url']
+    page['page_url'] = data['pageUrl']
     page['hotel'] = data['hotel']
     page['ratings'] = data['ratings']
     page['description'] = data['description']
@@ -29,39 +29,40 @@ def to_dict(data):
 def find_by_hotel(hotel):
     pages = []
     try:
-        pages = Hotel.objects.get(hotel=hotel)
+        pages = Hotel.objects(hotel=hotel)
         pages = list(map(to_dict, pages))
     except Hotel.DoesNotExist:
         logger.warning('not exist. hotel=%s', hotel)
-
     return pages
 
 
 @cache.memoize(CACHE_TIMEOUT)
-def find_by_ratings(address, high_ratings:int, low_ratings:int):
+def find_by_ratings(city, high_ratings:int, low_ratings:int):
     pages = []
     try:
-        pages = Hotel.objects(Q(address=address) & \
-                            Q(ratings__lte=high_ratings) & \
-                            Q(ratings__get=low_ratings))
+        pages = Hotel.objects(Q(city=city)&
+                              Q(ratings__gte=low_ratings)&
+                              Q(ratings__lte=high_ratings))\
+                     .order_by('-ratings')[:PULL_COUNT]
         pages = list(map(to_dict, pages))
 
     except Hotel.DoesNotExist:
-        logger.warning('not exist. address=%s ratings=%s', address, ratings)
+        logger.warning('not exist. city=%s ratings=%s', city, ratings)
 
     return pages
 
 
 @cache.memoize(CACHE_TIMEOUT)
-def find_by_stars(address, high_stars:int, low_stars:int):
+def find_by_stars(city, high_stars:int, low_stars:int):
     pages = []
     try:
-        pages = Hotel.objects(Q(address=address) & \
+        pages = Hotel.objects(Q(city=city) & \
                             Q(stars__lte=high_stars) & \
-                            Q(stars__get=low_stars))
+                            Q(stars__gte=low_stars))\
+                     .order_by('-stars')[:PULL_COUNT]
         pages = list(map(to_dict, pages))
 
     except Hotel.DoesNotExist:
-        logger.warning('not exist. address=%s ratings=%s', address, ratings)
+        logger.warning('not exist. city=%s ratings=%s', city, ratings)
 
     return pages
