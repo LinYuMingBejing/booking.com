@@ -2,17 +2,38 @@
 from __future__ import absolute_import, division, unicode_literals, print_function
 
 import jwt
-from flask import current_app, request, jsonify
+from flask import current_app, request, jsonify, Response
 from flask_cors import cross_origin
 
 from hotel import service
 from hotel.api.v1 import application as app
 from hotel.api.v1.decorators import authenticated
 
+import prometheus_client
+from prometheus_client import Counter
+
+total_requests = Counter('request_count', 'Total webapp request count')
+
+
+@app.route('/metrics')
+@cross_origin()
+def requests_count():
+    total_requests.inc()
+    return Response(prometheus_client.generate_latest(total_requests), mimetype='text/plain')
+
+
+@app.route('/')
+def index():
+    total_requests.inc()
+    return jsonify({
+        'status': 'ok'
+    })
+
 
 @app.route('/hotel/name', methods=['GET'])
 @cross_origin()
 def hotel():
+    total_requests.inc()
     result = {'msg': '', 'status': False}
     data = request.args
     if 'hotel' not in data:
@@ -33,6 +54,7 @@ def hotel():
 @app.route('/hotel/rating', methods=['GET'])
 @cross_origin()
 def hotel_rating():
+    total_requests.inc()
     result = {'msg': '', 'status': False}
     data = request.args
     if 'city' not in data or 'high_rating' not in data or 'low_rating' not in data:
@@ -57,6 +79,7 @@ def hotel_rating():
 @app.route('/hotel/stars', methods=['GET'])
 @cross_origin()
 def hotel_star():
+    total_requests.inc()
     result = {'msg': '', 'status': False}
     data = request.args
     if 'city' not in data or 'high_star' not in data or 'low_star' not in data:
@@ -81,6 +104,7 @@ def hotel_star():
 @app.route('/update/url', methods=['POST'])
 @authenticated()
 def update():
+    total_requests.inc()
     res = {'status': True}
     try:
         from hotel.tasks import update_page

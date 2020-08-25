@@ -2,9 +2,9 @@
 from __future__ import absolute_import, division, unicode_literals, print_function
 
 import logging
+from logging.config import dictConfig
 import os
 import urllib
-from logging.config import dictConfig
 
 from flask import Flask
 from flask_caching import Cache

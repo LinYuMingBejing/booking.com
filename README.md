@@ -5,7 +5,8 @@
 * Backend: Flask
 * Database: MongoDB, Redis
 * Asynchronous: Celery (Redis)
-* Monitoring Tool: Supervisor
+* Monitoring Tool: Supervisor, Prometheus, Grafana
+
 
 ### Install Docker
 * sudo apt-get update
@@ -27,7 +28,6 @@ stable"
 
 ### Install Docker Compose
 * sudo apt install docker-compose
-
 
 
 ### Deploy Application
@@ -69,3 +69,33 @@ uwsgitop 127.0.0.1:5002
 http://localhost:5001/dashboard
 ```
 ![flower](https://github.com/LinYuMingBejing/booking.com/blob/master/imgs/flower.png)
+
+
+### Prometheus Monitor
+```
+http://localhost:9090/targets
+```
+![Prometheus](https://img.onl/6vdblM)
+
+
+### Grafana Monitor
+```
+http://localhost:3000
+```
+```
+Username: admin
+Password: pass
+```
+![Grafana](https://img.onl/9PCenG)
+
+
+
+### To do :
+| Item      | Completed |
+| --------- | -----:|
+| Prometheus   |  -|
+| Grafana     |      -|
+
+
+> ##### Reference
+> * https://blog.techbridge.cc/2019/08/26/how-to-use-prometheus-grafana-in-flask-app/
