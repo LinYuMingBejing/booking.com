@@ -10,8 +10,15 @@ from hotel.api.v1 import application as app
 from hotel.api.v1.decorators import authenticated
 
 import prometheus_client
+from prometheus_client import Counter, Gauge
+import requests
+import prometheus_client
+from prometheus_client.core import CollectorRegistry
 from prometheus_client import Counter
+from flask import Response
 
+
+# Http的請求總數
 total_requests = Counter('request_count', 'Total webapp request count')
 
 
@@ -19,14 +26,15 @@ total_requests = Counter('request_count', 'Total webapp request count')
 @cross_origin()
 def requests_count():
     total_requests.inc()
-    return Response(prometheus_client.generate_latest(total_requests), mimetype='text/plain')
+    return Response(prometheus_client.generate_latest(), mimetype='text/plain')
 
 
 @app.route('/')
 def index():
     total_requests.inc()
     return jsonify({
-        'status': 'ok'
+        'status': 'ok',
+        'msg':'Hello world!'
     })
 
 

@@ -3,6 +3,7 @@
 from __future__ import absolute_import, division, unicode_literals, print_function
 
 import flask_script as script
+from prometheus_flask_exporter.multiprocess import UWsgiPrometheusMetrics
 
 import hotel
 
@@ -13,6 +14,10 @@ manager.add_command('runserver', script.Server(host='0.0.0.0', port=8000))
 manager.add_command('shell', script.Shell(make_context=lambda: {
     'current_app': app
 }))
+
+metrics = UWsgiPrometheusMetrics(app)
+metrics.register_endpoint('/uwsgi/metrics')
+
 
 if __name__ == "__main__":
     manager.run()
