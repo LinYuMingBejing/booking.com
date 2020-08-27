@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 
 volumes:
     prometheus_data: {}
@@ -49,6 +49,8 @@ services:
         env_file: hotel.env
         expose:
             - "8700"
+        sysctls:
+            - net.core.somaxconn=4096
         ports:
             - "8700:8700"
             # celery-flower
@@ -57,12 +59,6 @@ services:
             - "5002:5002"
             # supervisor
             - "9001:9001"
-        logging:
-            driver: "json-file"
-            options:
-                max-size: "50m"
-        restart: always
-
     nginx:
       container_name: nginx
       build:
