@@ -15,8 +15,8 @@ manager.add_command('shell', script.Shell(make_context=lambda: {
     'current_app': app
 }))
 
-metrics = UWsgiPrometheusMetrics(app)
-metrics.register_endpoint('/uwsgi/metrics')
+metrics = UWsgiPrometheusMetrics(app=app, default_labels={'project': 'hotel'})
+metrics.start_http_server(9200)
 
 
 if __name__ == "__main__":
