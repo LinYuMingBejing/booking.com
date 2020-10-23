@@ -115,13 +115,13 @@ def update():
     total_requests.inc()
     res = {'status': True}
     try:
-        from hotel.tasks import update_page
+        from hotel.tasks import upload
         pages = request.json        
-        update_page.delay(pages)
-        res["msg"] = "success"
+        upload.delay(pages)
+        res['msg'] = 'success'
 
     except Exception as e:
-        res["status"] = False
-        res["msg"] = "fail {}".format(e)
+        res['status'] = False
+        res['msg'] = 'fail {}'.format(e)
     
     return jsonify(res)
