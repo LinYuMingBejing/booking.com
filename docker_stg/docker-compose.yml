@@ -59,6 +59,7 @@ services:
             - "5002:5002"
             # supervisor
             - "9001:9001"
+            - "9200:9200"
     nginx:
       container_name: nginx
       build:
