@@ -6,6 +6,10 @@ from logging.config import dictConfig
 import os
 import urllib
 
+import werkzeug
+
+werkzeug.cached_property = werkzeug.utils.cached_property
+
 from flask import Flask
 from flask_caching import Cache
 from flask_mongoengine import MongoEngine
@@ -110,7 +114,7 @@ def create_application(settings=None):
         mongo.init_app(app)
 
     def init_redis_db(app, redis_store):
-        redis_store.init_app(app)
+        redis_store.init_app(app)  
 
     init_mongo(app, mongo)
     init_caches(app, caches)

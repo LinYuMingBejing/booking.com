@@ -5,8 +5,11 @@ import logging
 
 import jwt
 from flask import Blueprint, jsonify
+from flask_restplus import Api
 
-application = app = Blueprint('hotel.v1', __name__)
+app = application = Blueprint('hotel.v1', __name__)
+api = Api(application)
+
 
 from . import endpoints
 from hotel.api.errors import AuthenticationMissing, AuthenticationInvalid, NotDomainOwner
