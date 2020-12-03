@@ -16,7 +16,23 @@ def after_request(response):
     return response
 
 
-api = api.namespace('booking', description='Hotel API')
+api = api.namespace('booking', description='Simple API (version 1)')
+
+form = api.model('data',{
+    'pageUrl': fields.Url(description='pageUrl', required=True),
+    'hotel': fields.String(description='hotel name', required=True),
+    'address': fields.String(description='address', required=True),
+    'city': fields.Integer(description='city', required=True),
+    'town': fields.String(description='town', required=True),
+    'ratings': fields.Float(description='description', required=True),
+    'facilities': fields.List(cls_or_instance = fields.String, description='facilities', required=True),
+    'bed_type': fields.List(cls_or_instance = fields.String, description='bed_type', required=True),
+    'stars': fields.Float(description = 'stars', required=True),
+    'tourists': fields.List(cls_or_instance = fields.String, description='tourists', required=True),
+    'comments': fields.List(cls_or_instance = fields.String, description='comments', required=True),
+    'photo': fields.List(cls_or_instance = fields.String, description='photo', required=True)
+    }
+)
 
 
 @api.route('/index', methods=['GET'])
@@ -60,12 +76,9 @@ class ratings(Resource):
             return jsonify(res), 401
 
         try:
-            city = data.get('city')
-            high_rating = data.get('high_rating')
-            low_rating = data.get('low_rating')
             res.update({
                 'status': True,
-                'data' :service.find_by_ratings(city, high_rating, low_rating)
+                'data' :service.find_by_ratings(data['city'], data['high_rating'], data['low_rating'])
             })
 
         except Exception as e:
@@ -87,12 +100,9 @@ class start(Resource):
                 res['msg'] = 'Lack of required parameters'
                 return jsonify(res), 401
 
-            city = data.get('city')
-            high_stars = data.get('high_star')
-            low_stars = data.get('low_star')
             res.update({
                 'status': True,
-                'data' :service.find_by_stars(city, high_stars, low_stars)
+                'data' :service.find_by_stars(data['city'], data['high_stars'], data['low_stars'])
             })
 
         except Exception as e:
@@ -102,15 +112,13 @@ class start(Resource):
 
 
 @api.route('/hotel/update', methods=['POST'])
-@api.doc(params={'pageUrl': 'url', 'hotel':'name', 'address':'address', 'city':'city', 'town':'town',\
-            'ratings':'ratings', 'description':'description', 'facilities':'facilities','bed_type':'bed_type', 'stars':'stars',\
-            'comments':'comments', 'tourists':'tourists', 'photo':'photo'})
 class update(Resource):
+    @api.doc(body=form)
     def post(self):
         res = {'status': True}
         try:
             from hotel.tasks import upload
-            pages = request.json        
+            pages = request.data
             upload.delay(pages)
 
         except Exception as e:
