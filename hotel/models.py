@@ -5,8 +5,8 @@ from datetime import datetime
 from hotel import mongo as db
 
 
-class Hotel(db.Document):
-    pageUrl = db.StringField()
+class HotelInfo(db.Document):
+    pageUrl = db.StringField(unique=True)
     hotel = db.StringField()
     address = db.StringField()
     city = db.StringField()
@@ -19,6 +19,8 @@ class Hotel(db.Document):
     comments = db.ListField()
     tourists = db.ListField()
     photo = db.ListField()
+    creation_date = db.DateTimeField()
+    modified_date = db.DateTimeField(default=datetime.now)
     meta = {
         'indexes': [
             'hotel',
@@ -30,9 +32,9 @@ class Hotel(db.Document):
 
     def save(self, *args, **kwargs):
         if not self.creation_date:
-            self.creation_date = datetime.datetime.now()
-        self.modified_date = datetime.datetime.now()
-        return super(Hotel, self).save(*args, **kwargs)
+            self.creation_date = datetime.now()
+        self.modified_date = datetime.now()
+        return super(HotelInfo, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return self.pageUrl
@@ -42,17 +44,17 @@ class Hotel(db.Document):
 
     def to_dict(self):
         return {
-            "pageUrl": self.pageUrl,
-            "hotel": self.hotel,
-            "address": self.address,
-            "city": self.city,
-            "town": self.town,
-            "ratings": self.ratings,
-            "description": self.description,
-            "facilities": self.facilities,
-            "bed_type": self.bed_type,
+            'pageUrl': self.pageUrl,
+            'hotel': self.hotel,
+            'address': self.address,
+            'city': self.city,
+            'town': self.town,
+            'ratings': self.ratings,
+            'description': self.description,
+            'facilities': self.facilities,
+            'bed_type': self.bed_type,
             'stars': self.stars,
-            "comments":self.comments,
-            "tourists":self.tourists,
-            "photo":self.photo
+            'comments':self.comments,
+            'tourists':self.tourists,
+            'photo':self.photo
         }    

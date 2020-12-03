@@ -6,11 +6,14 @@ import logging
 from urllib.parse import urlparse
 from mongoengine.queryset.visitor import Q
 
-from hotel.models import Hotel
+from hotel.models import HotelInfo
 from hotel import cache
 
 CACHE_TIMEOUT = 60 * 60 * 1
 PULL_COUNT = 5
+
+logger = logging.getLogger()
+
 
 def to_dict(data):
     page = {}
@@ -29,9 +32,9 @@ def to_dict(data):
 def find_by_hotel(hotel):
     pages = []
     try:
-        pages = Hotel.objects(hotel=hotel)
+        pages = hotelInfo.objects.get(hotel=hotel)
         pages = list(map(to_dict, pages))
-    except Hotel.DoesNotExist:
+    except HotelInfo.DoesNotExist:
         logger.warning('not exist. hotel=%s', hotel)
     return pages
 
@@ -40,13 +43,13 @@ def find_by_hotel(hotel):
 def find_by_ratings(city, high_ratings:int, low_ratings:int):
     pages = []
     try:
-        pages = Hotel.objects(Q(city=city)&
+        pages = HotelInfo.objects(Q(city=city)&
                               Q(ratings__gte=low_ratings)&
                               Q(ratings__lte=high_ratings))\
                      .order_by('-ratings')[:PULL_COUNT]
         pages = list(map(to_dict, pages))
 
-    except Hotel.DoesNotExist:
+    except HotelInfo.DoesNotExist:
         logger.warning('not exist. city=%s ratings=%s', city, ratings)
 
     return pages
@@ -56,13 +59,13 @@ def find_by_ratings(city, high_ratings:int, low_ratings:int):
 def find_by_stars(city, high_stars:int, low_stars:int):
     pages = []
     try:
-        pages = Hotel.objects(Q(city=city) & \
+        pages = HotelInfo.objects(Q(city=city) & \
                             Q(stars__lte=high_stars) & \
                             Q(stars__gte=low_stars))\
                      .order_by('-stars')[:PULL_COUNT]
         pages = list(map(to_dict, pages))
 
-    except Hotel.DoesNotExist:
+    except HotelInfo.DoesNotExist:
         logger.warning('not exist. city=%s ratings=%s', city, ratings)
 
     return pages
