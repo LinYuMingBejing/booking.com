@@ -50,7 +50,7 @@ $ sudo docker ps
 $ sudo docker-compose logs --tail=20 -f flask
 ```
 
-### Swagger 
+#### Swagger 
 * http://localhost/
 
 ![swagger](https://img.onl/pluv8Q)
@@ -60,10 +60,12 @@ $ sudo docker-compose logs --tail=20 -f flask
 ```
 $ supervisorctl
 ```
+
 ![supervisorctl](https://github.com/LinYuMingBejing/booking.com/blob/master/imgs/supervosor.png)
 
 
 * http://localhost:9001
+
 ![supervisor_web](https://img.onl/wmlqSJ)
 
 
@@ -71,34 +73,29 @@ $ supervisorctl
 ```
 uwsgitop 127.0.0.1:5002
 ```
+
 ![uwsgitop](https://github.com/LinYuMingBejing/booking.com/blob/master/imgs/uwsgitop.png)
 
 
 #### Monitor celery worker 
 * http://localhost:5001/tasks
+
 ![flower](https://img.onl/S5P6iC)
 
 
 #### Prometheus Monitor
 * http://localhost:9090/targets
+
 ![Prometheus](https://img.onl/6vdblM)
 
 
 #### Grafana Monitor
 * http://localhost:3000
-
 * Username: admin
 * Password: pass
 
-![Grafana](https://img.onl/9PCenG)
+![Grafana](https://img.onl/7RoMbq)
 
-
-
-#### To do :
-| Item      | Completed |
-| --------- | -----:|
-| Prometheus   |  -|
-| Grafana     |      -|
 
 
 > ##### Reference
