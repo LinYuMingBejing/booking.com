@@ -103,7 +103,7 @@ class start(Resource):
 
             res.update({
                 'status': True,
-                'data' :service.find_by_stars(data['city'], data['high_stars'], data['low_stars'])
+                'data' :service.find_by_stars(data['city'], data['high_star'], data['low_star'])
             })
 
         except Exception as e:

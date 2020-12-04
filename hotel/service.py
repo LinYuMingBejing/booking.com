@@ -32,7 +32,7 @@ def to_dict(data):
 def find_by_hotel(hotel):
     pages = []
     try:
-        pages = hotelInfo.objects.get(hotel=hotel)
+        pages = HotelInfo.objects.get(hotel=hotel)
         pages = list(map(to_dict, pages))
     except HotelInfo.DoesNotExist:
         logger.warning('not exist. hotel=%s', hotel)
