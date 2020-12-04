@@ -18,7 +18,7 @@ class Celery(BaseCelery):
 
 
 def make_celery(app):
-    celery = Celery(app.import_name, broker=app.config['CELERY_BROKER_URL'])
+    celery = Celery(app.import_name, broker = app.config['CELERY_BROKER_URL'])
     celery.conf.update(app.config)
     TaskBase = celery.Task
 
@@ -30,10 +30,7 @@ def make_celery(app):
                 return TaskBase.__call__(self, *args, **kwargs)
 
     celery.Task = ContextTask
-
-    celery.autodiscover_tasks(
-        [app.name] + list(app.blueprints.keys()),
-        related_name='tasks')
+    celery.autodiscover_tasks([app.name], related_name='tasks')
     return celery
 
 

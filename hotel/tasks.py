@@ -1,14 +1,25 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, division, unicode_literals, print_function
 
-from hotel import redis_store, celery
-from hotel.models import HotelInfo
 from celery.signals import worker_ready
+import celery
 from datetime import datetime
-import json
+
+from hotel.models import HotelInfo
 
 
 UPLOAD_COUNT = 5000
+
+
+class Task(celery.Task):
+    def on_failure(self, exc, task_id, args, kwargs, einfo):
+        print('{0!r} failed: {1!r}'.format(task_id, exc))
+
+    def on_success(self, retval, task_id, args, kwargs):
+        pass
+
+    def on_retry(self, exc, task_id, args, kwargs, einfo):
+        pass
 
 
 @worker_ready.connect()
@@ -16,19 +27,21 @@ def on_worker_init(**_):
     pass
 
 
-@celery.task(bind=True)
-def clear_cache(task):
+from hotel import redis_store, celery
+
+
+@celery.task(bind=False, base=Task)
+def clear_cache():
     redis_store.flushdb()
 
 
-@celery.task(bind=True)
-def upload(task, rows):
+@celery.task(bind=False, base=Task)
+def upload(rows):
     pages = []
     if not isinstance(rows, list):
         upsert([update_page(rows)])
         return
 
-    rows = json.loads(rows)
     for row in rows:
         instance = update_page(row)
         pages.append(instance)

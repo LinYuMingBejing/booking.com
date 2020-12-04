@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, unicode_literals, print_functi
 import jwt
 from flask import current_app, request, jsonify, Response
 from flask_restplus import Resource, fields
+import json
 
 from hotel import service
 from hotel.api.v1 import api, app
@@ -119,7 +120,7 @@ class update(Resource):
         try:
             from hotel.tasks import upload
             pages = request.data
-            upload.delay(pages)
+            upload.delay(json.loads(pages))
 
         except Exception as e:
             res['status'] = False
