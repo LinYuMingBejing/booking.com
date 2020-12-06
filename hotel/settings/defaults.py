@@ -31,3 +31,11 @@ CELERY_ALWAYS_EAGER = (os.environ.get('CELERY_ALWAYS_EAGER') or 'false').lower()
 
 LOG_FILE_PATH = os.environ.get('LOG_FILE_PATH') or 'hotel.log'
 ERROR_LOG_FILE_PATH = os.environ.get('ERROR_LOG_FILE_PATH') or 'hotel.log'
+
+
+CELERYBEAT_SCHEDULE = {
+    'crawler': {
+        'task': 'hotel.tasks.crawler',
+        'schedule': timedelta(days=1)
+    },
+}
