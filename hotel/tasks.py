@@ -3,9 +3,11 @@ from __future__ import absolute_import, division, unicode_literals, print_functi
 
 from celery.signals import worker_ready
 import celery
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 
 from hotel.models import HotelInfo
+from hotel.crawler import CrawlerManager
 
 
 UPLOAD_COUNT = 5000
@@ -33,6 +35,16 @@ from hotel import redis_store, celery
 @celery.task(bind=False, base=Task)
 def clear_cache():
     redis_store.flushdb()
+
+
+@celery.task(ignore_result=True)
+def crawler():
+    crawlerManager = CrawlerManager('https://www.booking.com/searchresults.zh-tw.html?city=-2637882&dest_id=-2637882&dest_type=city&offset=75')
+    
+    hotelPages = crawlerManager.crawlHotelPage()
+    for pages in hotelPages:
+        with ThreadPoolExecutor(max_workers = 5) as pool:
+            futures = [pool.submit(crawlerManager.parse, url) for url in pages]
 
 
 @celery.task(bind=False, base=Task)
