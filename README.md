@@ -99,8 +99,8 @@ uwsgitop 127.0.0.1:5002
 
 
 #### Nginx Log Monitor
-
-![logstash](https://img.onl/9UfaOJ)
+* http://localhost:5601
+![logstash](https://img.onl/MXXRSG)
 
 > ##### Reference
 > * https://blog.techbridge.cc/2019/08/26/how-to-use-prometheus-grafana-in-flask-app/
