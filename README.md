@@ -7,6 +7,7 @@
 * Database: MongoDB, Redis
 * Asynchronous: Celery (Redis)
 * Monitoring Tool: Supervisor, Prometheus, Grafana
+* Collecting Logs: Logstash
 
 
 #### Install Docker
@@ -97,6 +98,9 @@ uwsgitop 127.0.0.1:5002
 ![Grafana](https://img.onl/7RoMbq)
 
 
+#### Nginx Log Monitor
+
+![logstash](https://img.onl/9UfaOJ)
 
 > ##### Reference
 > * https://blog.techbridge.cc/2019/08/26/how-to-use-prometheus-grafana-in-flask-app/
