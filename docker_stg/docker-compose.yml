@@ -58,7 +58,7 @@ services:
             # uwsgitop
             - "5002:5002"
             # supervisor
-            - "9001:9001"
+            - "9002:9002"
             - "9200:9200"
     nginx:
       container_name: nginx
@@ -74,4 +74,9 @@ services:
       volumes:
         - ./nginx/nginx.conf:/etc/nginx/sites-enabled/nginx.conf
         - ./nginx/site_enabled/default.conf:/etc/nginx/conf.d/default.conf
+      logging:
+          driver: syslog
+          options:
+            tag: nginx
+            syslog-address: "tcp://logstash:5000"
       restart: always
