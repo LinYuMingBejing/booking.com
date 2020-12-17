@@ -102,5 +102,57 @@ uwsgitop 127.0.0.1:5002
 * http://localhost:5601
 ![logstash](https://img.onl/MXXRSG)
 
+
+#### Note1: How to allow certain ips connect mongodb?
+
+* vim /etc/mongod.conf
+```
+    # bindIp: 127.0.0.1
+    bindIp: 0.0.0.0  
+```
+
+* restart mongodb
+```
+$ sudo service mongod restart
+$ sudo service mongod status
+```
+
+* firewall settings
+```
+$ sudo ufw enable
+$ sudo ufw deny  from 192.168.18.0/24 to any port 27017
+$ sudo ufw allow from 192.168.18.0/24 to any port 27017
+$ sudo ufw status
+```
+
+#### Note2: How to create multiple user on mongodb?
+
+* create user
+```
+> use booking;
+switched to db booking
+> db.createUser(
+  {
+    user: "dbadmin",
+    pwd: "StrongPassword",
+    roles: [ { role: "readWrite", db: "booking" } ]
+  }
+)
+> exit
+bye
+```
+
+* vim /etc/mongod.conf 
+```
+security:
+  authorization: enabled
+```
+
+* restart mongodb
+```
+$ sudo service mongod restart
+$ sudo service mongod status
+```
+
 > ##### Reference
 > * https://blog.techbridge.cc/2019/08/26/how-to-use-prometheus-grafana-in-flask-app/
