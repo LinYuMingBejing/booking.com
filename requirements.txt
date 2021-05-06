@@ -13,7 +13,7 @@ cryptography==2.6.1
 decorator==4.4.0
 Flask==1.1.2
 Flask-Caching==1.8.0
-Flask-Cors==3.0.8
+Flask-Cors==3.0.9
 Flask-Headers==1.0
 flask-mongoengine==0.9.5
 flask-redis==0.4.0
