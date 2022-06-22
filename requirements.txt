@@ -35,7 +35,7 @@ lxml==4.6.1
 MarkupSafe==1.1.1
 mistune==0.8.4
 mongoengine==0.17.0
-numpy==1.16.2
+numpy==1.22.0
 oauthlib==3.0.1
 prometheus-client==0.8.0
 prometheus-flask-exporter==0.15.4
